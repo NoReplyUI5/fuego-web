@@ -69,7 +69,7 @@ if (navigator.modelContext?.provideContext) {
       tools: [
         {
           name: 'getStats',
-          description: 'Get live Mesuic Discord music bot stats: total servers, users, songs played, commands used, active players, average ping, and per-shard / Lavalink node details.',
+          description: 'Get live Fuego Discord music bot stats: total servers, users, songs played, commands used, active players, average ping, and per-shard / Lavalink node details.',
           inputSchema: { type: 'object', properties: {}, additionalProperties: false },
           async execute() {
             const res = await fetch('/api/stats');

@@ -1,7 +1,7 @@
 module.exports = {
   port: 6080,
-  siteUrl: 'https://mesuic.qzz.io',
-  statsUpstream: 'http://44.194.24.194:3000/stats',
+  siteUrl: 'https://fuego.qzz.io',
+  statsUpstream: 'http://172.93.102.148:3001/stats',
   cacheTtl: 300, // seconds
 
   redis: {

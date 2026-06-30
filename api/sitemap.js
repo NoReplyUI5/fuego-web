@@ -1,4 +1,4 @@
-const SITE = 'https://mesuic.qzz.io';
+const SITE = 'https://fuego.qzz.io';
 const PAGES = ['/', '/status', '/terms', '/privacy'];
 
 export default function handler(req, res) {

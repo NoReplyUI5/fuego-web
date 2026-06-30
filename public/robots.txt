@@ -2,4 +2,4 @@ User-agent: *
 Content-Signal: search=yes, ai-train=yes, ai-input=yes
 Allow: /
 
-Sitemap: https://mesuic.qzz.io/sitemap.xml
+Sitemap: https://fuego.qzz.io/sitemap.xml

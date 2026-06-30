@@ -1,6 +1,6 @@
 // RFC 9727 — API Catalog, served as application/linkset+json (RFC 9264).
-// Mesuic exposes one public, unauthenticated API: GET /api/stats.
-const SITE = 'https://mesuic.qzz.io';
+// Fuego exposes one public, unauthenticated API: GET /api/stats.
+const SITE = 'https://fuego.qzz.io';
 
 export default function handler(req, res) {
   const catalog = {
@@ -8,7 +8,7 @@ export default function handler(req, res) {
       {
         anchor: `${SITE}/api/stats`,
         'service-doc': [
-          { href: `${SITE}/status`, type: 'text/html', title: 'Mesuic live status page' },
+          { href: `${SITE}/status`, type: 'text/html', title: 'Fuego live status page' },
         ],
         status: [
           { href: `${SITE}/api/stats`, type: 'application/json', title: 'Live stats JSON (shards, players, totals)' },

@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Mesuic Bot — Live Status</title>
-  <meta name="description" content="Real-time stats and shard status for Mesuic Discord music bot." />
+  <title>Fuego — Live Status</title>
+  <meta name="description" content="Real-time stats and shard status for Fuego Discord music bot." />
   <meta name="robots" content="index, follow" />
-  <meta name="keywords" content="discord bot status, mesuic status, discord music bot status, shard status" />
-  <link rel="canonical" href="https://mesuic.qzz.io/status" />
+  <meta name="keywords" content="discord bot status, fuego status, discord music bot status, shard status" />
+  <link rel="canonical" href="https://fuego.qzz.io/status" />
   <link rel="icon" type="image/png" href="/public/favicon.png" />
   <link rel="apple-touch-icon" href="/public/favicon.png" />
   <meta name="theme-color" content="#5865F2" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Mesuic Bot" />
-  <meta property="og:title" content="Mesuic Bot — Live Status" />
-  <meta property="og:description" content="Real-time stats and shard status for Mesuic Bot." />
-  <meta property="og:url" content="https://mesuic.qzz.io/status" />
-  <meta property="og:image" content="https://mesuic.qzz.io/public/favicon.png" />
+  <meta property="og:site_name" content="Fuego" />
+  <meta property="og:title" content="Fuego — Live Status" />
+  <meta property="og:description" content="Real-time stats and shard status for Fuego." />
+  <meta property="og:url" content="https://fuego.qzz.io/status" />
+  <meta property="og:image" content="https://fuego.qzz.io/public/favicon.png" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Mesuic Bot — Live Status" />
-  <meta name="twitter:description" content="Real-time stats and shard status for Mesuic Bot." />
-  <meta name="twitter:image" content="https://mesuic.qzz.io/public/favicon.png" />
+  <meta name="twitter:title" content="Fuego — Live Status" />
+  <meta name="twitter:description" content="Real-time stats and shard status for Fuego." />
+  <meta name="twitter:image" content="https://fuego.qzz.io/public/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
@@ -82,8 +82,8 @@
 
 <nav id="navbar">
   <a href="/" class="nav-brand">
-    <img src="/public/favicon.png" alt="Mesuic" />
-    Mesuic
+    <img src="/public/favicon.png" alt="Fuego" />
+    Fuego
     <span class="nav-status"><span class="dot online" id="status-dot"></span><span id="status-text">Online</span></span>
   </a>
   <div class="nav-links">
@@ -157,8 +157,8 @@
 
 <footer>
   <div class="footer-brand">
-    <img src="/public/favicon.png" alt="Mesuic" />
-    <span>Mesuic</span>
+    <img src="/public/favicon.png" alt="Fuego" />
+    <span>Fuego</span>
   </div>
   <div class="footer-links">
     <a href="/invite">Invite</a>
@@ -167,7 +167,7 @@
     <a href="/terms">Terms</a>
     <a href="/privacy">Privacy</a>
   </div>
-  <p class="footer-copy">© 2026 Mesuic · Not affiliated with Discord Inc.</p>
+  <p class="footer-copy">© 2026 Fuego · Not affiliated with Discord Inc.</p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -406,10 +406,10 @@
       renderStats(d);
       document.getElementById('status-dot').className = 'dot online';
       document.getElementById('status-text').textContent = 'Online';
-      try { localStorage.setItem('mesuic:stats', JSON.stringify(d)); } catch {}
+      try { localStorage.setItem('fuego:stats', JSON.stringify(d)); } catch {}
     } catch {
       try {
-        const local = JSON.parse(localStorage.getItem('mesuic:stats'));
+        const local = JSON.parse(localStorage.getItem('fuego:stats'));
         if (local && !local.error) {
           renderStats(local);
           document.getElementById('status-dot').className = 'dot offline';

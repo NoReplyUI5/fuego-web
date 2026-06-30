@@ -4,6 +4,6 @@ export default function handler(req, res) {
     'User-agent: *\n' +
     'Content-Signal: search=yes, ai-train=yes, ai-input=yes\n' +
     'Allow: /\n\n' +
-    'Sitemap: https://mesuic.qzz.io/sitemap.xml\n'
+    'Sitemap: https://fuego.qzz.io/sitemap.xml\n'
   );
 }

@@ -48,7 +48,7 @@ app.get('/api/stats', async (req, res) => {
   // 1. Redis cache (shared, 5 min) — skip if ?live
   if (!live) {
     try {
-      const cached = await redisGet('mesuic:stats');
+      const cached = await redisGet('fuego:stats');
       if (cached) {
         return res.set({
           'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60',
@@ -64,7 +64,7 @@ app.get('/api/stats', async (req, res) => {
     const payload = { ...data, _fetchedAt: Date.now() };
 
     if (!live) {
-      try { await redisSet('mesuic:stats', payload, cfg.cacheTtl); } catch (e) { console.error('Redis write:', e.message); }
+      try { await redisSet('fuego:stats', payload, cfg.cacheTtl); } catch (e) { console.error('Redis write:', e.message); }
       try {
         await tursoExec('INSERT INTO stats_snapshots (data, fetched_at) VALUES (?, ?)', [JSON.stringify(payload), Date.now()]);
         await tursoExec('DELETE FROM stats_snapshots WHERE id NOT IN (SELECT id FROM stats_snapshots ORDER BY fetched_at DESC LIMIT 288)');
@@ -91,7 +91,7 @@ app.get('/.well-known/api-catalog', (_, res) => {
   res.send(JSON.stringify({
     linkset: [{
       anchor: `${cfg.siteUrl}/api/stats`,
-      'service-doc': [{ href: `${cfg.siteUrl}/status`, type: 'text/html', title: 'Mesuic live status page' }],
+      'service-doc': [{ href: `${cfg.siteUrl}/status`, type: 'text/html', title: 'Fuego live status page' }],
       status: [{ href: `${cfg.siteUrl}/api/stats`, type: 'application/json', title: 'Live stats JSON (shards, players, totals)' }],
     }],
   }, null, 2));
@@ -135,4 +135,4 @@ Object.entries({ '/': 'index', '/status': 'status', '/terms': 'terms', '/privacy
   app.get(route, (_, res) => res.sendFile(path.join(__dirname, 'public', `${file}.html`)));
 });
 
-initDB().then(() => app.listen(cfg.port, () => console.log(`🎵 Mesuic running → http://localhost:${cfg.port}`))).catch(console.error);
+initDB().then(() => app.listen(cfg.port, () => console.log(`🔥 Fuego running → http://localhost:${cfg.port}`))).catch(console.error);
