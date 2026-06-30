@@ -135,4 +135,9 @@ Object.entries({ '/': 'index', '/status': 'status', '/terms': 'terms', '/privacy
   app.get(route, (_, res) => res.sendFile(path.join(__dirname, 'public', `${file}.html`)));
 });
 
-initDB().then(() => app.listen(cfg.port, () => console.log(`🔥 Fuego running → http://localhost:${cfg.port}`))).catch(console.error);
+if (process.env.VERCEL) {
+  initDB().catch(console.error);
+  module.exports = app;
+} else {
+  initDB().then(() => app.listen(cfg.port, () => console.log(`🔥 Fuego running → http://localhost:${cfg.port}`))).catch(console.error);
+}
