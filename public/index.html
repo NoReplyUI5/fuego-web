@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Mesuic Bot — Free High-Quality Discord Music Bot</title>
+  <meta name="description" content="Mesuic Bot is a free Discord music bot with high-quality audio, supporting Spotify, YouTube, SoundCloud, and Apple Music. Features include filters, autoplay, 24/7 mode, and no premium required." />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="discord music bot, free music bot, spotify discord bot, youtube discord bot, soundcloud bot, apple music bot, music bot 2026, best discord bot" />
+  <link rel="canonical" href="https://mesuic.qzz.io/" />
+  <link rel="icon" type="image/png" href="/public/favicon.png" />
+  <link rel="apple-touch-icon" href="/public/favicon.png" />
+  <meta name="theme-color" content="#5865F2" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Mesuic Bot" />
+  <meta property="og:title" content="Mesuic Bot — Free High-Quality Discord Music Bot" />
+  <meta property="og:description" content="Mesuic Bot is a free Discord music bot with high-quality audio, supporting Spotify, YouTube, SoundCloud, and Apple Music. Features include filters, autoplay, 24/7 mode, and no premium required." />
+  <meta property="og:url" content="https://mesuic.qzz.io/" />
+  <meta property="og:image" content="https://mesuic.qzz.io/public/favicon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mesuic Bot — Free High-Quality Discord Music Bot" />
+  <meta name="twitter:description" content="Mesuic Bot is a free Discord music bot with high-quality audio, supporting Spotify, YouTube, SoundCloud, and Apple Music." />
+  <meta name="twitter:image" content="https://mesuic.qzz.io/public/favicon.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Mesuic Bot",
+    "url": "https://mesuic.qzz.io",
+    "description": "Mesuic Bot is a free Discord music bot with high-quality audio, supporting Spotify, YouTube, SoundCloud, and Apple Music.",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Discord",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "Mesuic",
+      "url": "https://mesuic.qzz.io"
+    }
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/public/shared.css" />
+  <style>
+    /* ── HERO ── */
+    #hero {
+      display: flex; align-items: center;
+      padding: 7rem 1.5rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: ''; position: absolute; top: -150px; left: -150px;
+      width: 650px; height: 650px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(88,101,242,0.16) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    #hero::after {
+      content: ''; position: absolute; bottom: -100px; right: -100px;
+      width: 450px; height: 450px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(155,89,182,0.1) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-layout {
+      max-width: 720px; margin: 0 auto; width: 100%;
+    }
+
+    .hero-text { position: relative; z-index: 1; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(88,101,242,0.1); border: 1px solid rgba(88,101,242,0.25);
+      padding: 0.3rem 0.85rem; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 600; color: #a5b0ff;
+      margin-bottom: 1.25rem; letter-spacing: 0.04em;
+    }
+    .hero-tag span { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse-dot 2s infinite; display: inline-block; }
+
+    .hero-text h1 {
+      font-size: clamp(2.6rem, 6vw, 4.5rem);
+      font-weight: 800; letter-spacing: -0.03em; line-height: 1.07;
+      margin-bottom: 1rem;
+    }
+    .hero-text h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #7289ff, #b06be3);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub { color: var(--muted); font-size: 1rem; line-height: 1.7; margin-bottom: 2rem; max-width: 460px; }
+
+    .hero-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1.5rem; border-radius: 10px;
+      font-weight: 600; font-size: 0.9rem; transition: all 0.2s; text-decoration: none;
+    }
+    .btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 18px rgba(88,101,242,0.3); }
+    .btn-primary:hover, .btn-primary:active { background: #4752c4; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(88,101,242,0.45); }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover, .btn-outline:active { border-color: rgba(88,101,242,0.45); background: rgba(88,101,242,0.06); transform: translateY(-1px); }
+
+    .platforms { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+    .platforms span { font-size: 0.75rem; color: var(--muted); margin-right: 0.2rem; }
+    .pill { background: var(--surface); border: 1px solid var(--border); padding: 0.22rem 0.65rem; border-radius: 20px; font-size: 0.73rem; color: var(--muted); }
+
+    /* player card */
+    .hero-visual { position: relative; z-index: 1; }
+
+    /* ── STATS ── */
+    #stats {
+      padding: 4rem 1.5rem;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-container { max-width: 1100px; margin: 0 auto; }
+    .stats-header { text-align: center; margin-bottom: 2.5rem; }
+    .stats-header h2 { font-size: clamp(1.4rem, 2.5vw, 1.9rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+    .stats-header p { color: var(--muted); font-size: 0.9rem; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 500px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .stat-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.4rem 1rem;
+      text-align: center;
+      position: relative; overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+    .stat-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      opacity: 0; transition: opacity 0.25s;
+    }
+    .stat-card:hover, .stat-card:active { border-color: rgba(88,101,242,0.3); transform: translateY(-3px); box-shadow: 0 8px 28px rgba(88,101,242,0.1); }
+    .stat-card:hover::before, .stat-card:active::before { opacity: 1; }
+    .stat-card .icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(88,101,242,0.1); border: 1px solid rgba(88,101,242,0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 0.85rem; }
+    .stat-card .icon svg { width: 17px; height: 17px; fill: none; stroke: var(--primary); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .stat-card .val { font-family: 'Space Grotesk', sans-serif; font-size: 1.65rem; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 0.3rem; }
+    .stat-card .lbl { font-size: 0.73rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* ── CTA ── */
+    #cta { padding: 5rem 1.5rem; text-align: center; }
+    .cta-inner { max-width: 520px; margin: 0 auto; }
+    #cta h2 { font-size: clamp(1.7rem, 3.5vw, 2.6rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+    #cta p { color: var(--muted); margin-bottom: 2rem; line-height: 1.65; }
+    .cta-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="/" class="nav-brand">
+    <img src="/public/favicon.png" alt="Mesuic" />
+    Mesuic
+    <span class="nav-status"><span class="dot online" id="status-dot"></span><span id="status-text">Online</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="/" class="active">Home</a>
+    <a href="/status">Status</a>
+    <a href="/terms">Terms</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/invite" class="btn-invite">Add to Discord</a>
+  </div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/">Home</a>
+  <a href="/status">Status</a>
+  <a href="/terms">Terms</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/invite" class="btn-invite">Add to Discord</a>
+</div>
+
+<section id="hero">
+  <div class="hero-layout">
+    <div class="hero-text">
+      <div class="hero-tag"><span></span> Free · No premium required</div>
+      <h1>Free high-quality<br><em>Discord music bot</em></h1>
+      <p class="hero-sub">Supports Spotify, YouTube, SoundCloud, Apple Music, direct links and more. Filters, autoplay, 24/7 mode — all included.</p>
+      <div class="hero-btns">
+        <a href="/invite" class="btn btn-primary">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          Add Mesuic
+        </a>
+        <a href="/support" class="btn btn-outline">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Join Support
+        </a>
+        <a href="https://top.gg/bot/1157589891287367730/vote" target="_blank" rel="noopener" class="btn btn-outline">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Top.gg
+        </a>
+      </div>
+      <div class="platforms">
+        <span>Supports</span>
+        <div class="pill">Spotify</div>
+        <div class="pill">YouTube</div>
+        <div class="pill">SoundCloud</div>
+        <div class="pill">Apple Music</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-container">
+    <div class="stats-header">
+      <h2>Mesuic by the numbers</h2>
+      <p>Live data, updated every 5 minutes.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="val" id="s-servers">--</div><div class="lbl">Servers</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="val" id="s-users">--</div><div class="lbl">Users</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+        <div class="val" id="s-songs">--</div><div class="lbl">Songs Played</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+        <div class="val" id="s-cmds">--</div><div class="lbl">Commands Used</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="val" id="s-ping">--</div><div class="lbl">Avg Ping</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner">
+    <h2>Customize your server<br>for free with Mesuic Bot</h2>
+    <p>Join hundreds of servers already using Mesuic for high-quality, lag-free music. Free forever.</p>
+    <div class="cta-btns">
+      <a href="/invite" class="btn btn-primary">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        Add to Discord
+      </a>
+      <a href="/support" class="btn btn-outline">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Join Support
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">
+    <img src="/public/favicon.png" alt="Mesuic" />
+    <span>Mesuic</span>
+  </div>
+  <div class="footer-links">
+    <a href="/invite">Invite</a>
+    <a href="/support">Support Server</a>
+    <a href="https://top.gg/bot/1157589891287367730/vote" target="_blank" rel="noopener">Top.gg</a>
+    <a href="/terms">Terms</a>
+    <a href="/privacy">Privacy</a>
+  </div>
+  <p class="footer-copy">© 2026 Mesuic · Not affiliated with Discord Inc.</p>
+</footer>
+
+<script src="/public/shared.js"></script>
+<script>
+  fetch('/api/stats').then(r => r.json()).then(d => {
+    if (d.error) throw new Error();
+    const sh = d.stats ?? [];
+    const guilds = sh.reduce((a,s) => a + (s.client?.guilds ?? 0), 0);
+    const users  = sh.reduce((a,s) => a + (s.client?.users  ?? 0), 0);
+    const pings  = sh.map(s => parsePing(s.client?.ping)).filter(Boolean);
+    const ping   = pings.length ? Math.round(pings.reduce((a,b)=>a+b)/pings.length) : 0;
+    countUp(document.getElementById('s-servers'), guilds);
+    countUp(document.getElementById('s-songs'),   d.songsPlayed?.total  ?? 0);
+    countUp(document.getElementById('s-cmds'),    d.commandsUsed?.total ?? 0);
+    document.getElementById('s-users').textContent = fmt(users);
+    document.getElementById('s-ping').textContent  = ping + 'ms';
+    document.getElementById('status-dot').className    = 'dot online';
+    document.getElementById('status-text').textContent = 'Online';
+  }).catch(() => {
+    document.getElementById('status-dot').className    = 'dot offline';
+    document.getElementById('status-text').textContent = 'Offline';
+  });
+</script>
+</body>
+</html>

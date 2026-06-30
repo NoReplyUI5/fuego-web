@@ -1,0 +1,30 @@
+{
+  "redirects": [
+    { "source": "/invite", "destination": "https://discord.com/oauth2/authorize?client_id=1157589891287367730&permissions=274914995289&response_type=code&redirect_uri=https%3A%2F%2Fdiscord.gg%2FfBZ7DDZRfW&integration_type=0&scope=bot+applications.commands+guilds.join", "permanent": false },
+    { "source": "/support", "destination": "https://discord.gg/9evPZjMpnR", "permanent": false },
+    { "source": "/vote", "destination": "https://top.gg/bot/1157589891287367730/vote", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/cdn/(.*)", "destination": "/files/$1" },
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    { "source": "/robots.txt",  "destination": "/api/robots" },
+    { "source": "/.well-known/api-catalog", "destination": "/api/api-catalog" },
+    { "source": "/",        "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }], "destination": "/api/md?path=home" },
+    { "source": "/status",  "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }], "destination": "/api/md?path=status" },
+    { "source": "/terms",   "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }], "destination": "/api/md?path=terms" },
+    { "source": "/privacy", "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }], "destination": "/api/md?path=privacy" },
+    { "source": "/", "destination": "/public/index.html" },
+    { "source": "/status", "destination": "/public/status.html" },
+    { "source": "/terms", "destination": "/public/terms.html" },
+    { "source": "/privacy", "destination": "/public/privacy.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(status|terms|privacy)?",
+      "headers": [
+        { "key": "Link", "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </status>; rel=\"service-doc\"; type=\"text/html\"" },
+        { "key": "Vary", "value": "Accept" }
+      ]
+    }
+  ]
+}

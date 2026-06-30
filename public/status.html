@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Mesuic Bot — Live Status</title>
+  <meta name="description" content="Real-time stats and shard status for Mesuic Discord music bot." />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="discord bot status, mesuic status, discord music bot status, shard status" />
+  <link rel="canonical" href="https://mesuic.qzz.io/status" />
+  <link rel="icon" type="image/png" href="/public/favicon.png" />
+  <link rel="apple-touch-icon" href="/public/favicon.png" />
+  <meta name="theme-color" content="#5865F2" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Mesuic Bot" />
+  <meta property="og:title" content="Mesuic Bot — Live Status" />
+  <meta property="og:description" content="Real-time stats and shard status for Mesuic Bot." />
+  <meta property="og:url" content="https://mesuic.qzz.io/status" />
+  <meta property="og:image" content="https://mesuic.qzz.io/public/favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Mesuic Bot — Live Status" />
+  <meta name="twitter:description" content="Real-time stats and shard status for Mesuic Bot." />
+  <meta name="twitter:image" content="https://mesuic.qzz.io/public/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/public/shared.css" />
+  <style>
+    .page-hero {
+      padding: 7rem 0 3rem;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(88,101,242,0.08) 0%, transparent 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .page-hero h1 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 0.5rem; }
+    .page-hero p { color: var(--muted); }
+
+    /* cache badge + timer */
+    .status-meta { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+    #cache-badge { font-size: 0.82rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 20px; background: rgba(35,165,90,0.15); color: var(--success); display: inline-flex; align-items: center; gap: 0.35rem; }
+
+    /* stat cards */
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 3rem; }
+    @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 540px) { .stats-grid { grid-template-columns: 1fr; } }
+    .stat-card { text-align: center; }
+    .stat-card .icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .stat-card .val { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: var(--primary); }
+    .stat-card .lbl { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+    /* charts */
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 3rem; }
+    @media (max-width: 720px) { .charts-grid { grid-template-columns: 1fr; } }
+    .chart-card { padding: 1.5rem; }
+    .chart-card h3 { margin-bottom: 1rem; font-size: 1rem; }
+    .chart-wrap { position: relative; height: 200px; }
+
+    /* shards */
+    .shards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; margin-bottom: 3rem; }
+    .shard-card { }
+    .shard-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .shard-id { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; background: rgba(88,101,242,0.15); color: var(--primary); padding: 0.2rem 0.6rem; border-radius: 6px; }
+    .shard-rows { display: flex; flex-direction: column; gap: 0.5rem; }
+    .shard-row { display: flex; justify-content: space-between; font-size: 0.88rem; }
+    .shard-row span:first-child { color: var(--muted); }
+    .shard-row span:last-child { font-weight: 600; }
+
+    /* node card */
+    .node-card { }
+    .node-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .node-item .lbl { font-size: 0.78rem; color: var(--muted); margin-bottom: 4px; }
+    .node-item .val { font-weight: 600; font-size: 0.95rem; }
+    .progress-bar { height: 6px; background: var(--border); border-radius: 3px; margin-top: 6px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.6s ease; }
+
+    /* skeleton */
+    .skeleton { background: linear-gradient(90deg, var(--border) 25%, #2a2a38 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 8px; }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="/" class="nav-brand">
+    <img src="/public/favicon.png" alt="Mesuic" />
+    Mesuic
+    <span class="nav-status"><span class="dot online" id="status-dot"></span><span id="status-text">Online</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/status" class="active">Status</a>
+    <a href="/terms">Terms</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/invite" class="btn-invite">Add to Discord</a>
+  </div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/">Home</a>
+  <a href="/status" class="active">Status</a>
+  <a href="/terms">Terms</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/invite" class="btn-invite">Add to Discord</a>
+</div>
+
+<div class="page-hero">
+  <div class="container">
+    <h1>Live Status</h1>
+    <p id="hero-sub">Real-time metrics updated every 5 minutes.</p>
+    <div class="status-meta">
+      <span id="cache-badge">⏳ Loading…</span>
+
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+
+    <!-- STAT CARDS -->
+    <div class="stats-grid" id="stat-cards">
+      <div class="card stat-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;stroke:var(--primary)"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="val" id="sc-guilds">--</div><div class="lbl">Servers</div></div>
+      <div class="card stat-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;stroke:var(--primary)"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="val" id="sc-users">--</div><div class="lbl">Users</div></div>
+      <div class="card stat-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;stroke:var(--primary)"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><div class="val" id="sc-songs">--</div><div class="lbl">Songs Played</div></div>
+      <div class="card stat-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;stroke:var(--primary)"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div><div class="val" id="sc-cmds">--</div><div class="lbl">Commands Used</div></div>
+      <div class="card stat-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;stroke:var(--primary)"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div><div class="val" id="sc-playing">--</div><div class="lbl">Active Players</div></div>
+      <div class="card stat-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;stroke:var(--primary)"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="val" id="sc-ping">--</div><div class="lbl">Avg Ping</div></div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts-grid">
+      <div class="card chart-card reveal">
+        <h3>Commands Used (Last 7 Days)</h3>
+        <div class="chart-wrap"><canvas id="chart-cmds"></canvas></div>
+      </div>
+      <div class="card chart-card reveal">
+        <h3>Songs Played (Last 7 Days)</h3>
+        <div class="chart-wrap"><canvas id="chart-songs"></canvas></div>
+      </div>
+    </div>
+
+    <!-- SHARD STATUS -->
+    <h2 class="section-title reveal">Shard Status</h2>
+    <p class="section-sub reveal">All shards operational</p>
+    <div class="shards-grid" id="shards-grid">
+      <!-- dynamic -->
+    </div>
+
+    <!-- NODE CARDS -->
+    <h2 class="section-title reveal">Lavalink Nodes</h2>
+    <div class="shards-grid" id="nodes-grid">
+      <!-- dynamic: one card per node -->
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">
+    <img src="/public/favicon.png" alt="Mesuic" />
+    <span>Mesuic</span>
+  </div>
+  <div class="footer-links">
+    <a href="/invite">Invite</a>
+    <a href="/support">Support Server</a>
+    <a href="https://top.gg/bot/1157589891287367730/vote" target="_blank" rel="noopener">Top.gg</a>
+    <a href="/terms">Terms</a>
+    <a href="/privacy">Privacy</a>
+  </div>
+  <p class="footer-copy">© 2026 Mesuic · Not affiliated with Discord Inc.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/public/shared.js"></script>
+<script>
+  let cmdChart, songChart;
+
+  function mkChart(id, labels, values, color) {
+    const ctx = document.getElementById(id);
+    const gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 200);
+    gradient.addColorStop(0, color + '40');
+    gradient.addColorStop(1, color + '00');
+    let pinned = null; // index of point pinned via click/tap
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          data: values,
+          borderColor: color,
+          borderWidth: 2.5,
+          backgroundColor: gradient,
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: color,
+          pointRadius: 4,
+          pointHoverRadius: 7,
+          pointHitRadius: 14,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        onClick(evt, elements) {
+          // Click/tap a point to pin its value; click again (or elsewhere) to unpin.
+          const hit = chart.getElementsAtEventForMode(evt, 'index', { intersect: false }, true);
+          const idx = hit.length ? hit[0].index : null;
+          if (idx === null || idx === pinned) {
+            pinned = null;
+            chart.setActiveElements([]);
+            chart.tooltip.setActiveElements([], { x: 0, y: 0 });
+          } else {
+            pinned = idx;
+            const active = [{ datasetIndex: 0, index: idx }];
+            chart.setActiveElements(active);
+            const pt = chart.getDatasetMeta(0).data[idx];
+            chart.tooltip.setActiveElements(active, { x: pt.x, y: pt.y });
+          }
+          chart.update();
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            enabled: true,
+            backgroundColor: 'rgba(20,20,28,0.95)',
+            borderColor: color,
+            borderWidth: 1,
+            titleColor: '#fff',
+            bodyColor: '#cfcfe0',
+            padding: 10,
+            displayColors: false,
+            callbacks: {
+              label: (item) => ' ' + Number(item.parsed.y).toLocaleString(),
+            }
+          }
+        },
+        scales: {
+          x: { ticks: { color: '#6b6b80', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+          y: { ticks: { color: '#6b6b80', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.06)' } }
+        }
+      }
+    });
+    return chart;
+  }
+
+  function updateChart(chart, labels, values) {
+    chart.data.labels = labels;
+    chart.data.datasets[0].data = values;
+    chart.update('none');
+  }
+
+  function parseUptimeSeconds(value) {
+    if (value == null || value === '') return null;
+    if (typeof value === 'number') return value;
+    const match = String(value).trim().match(/^(\d+(?:\.\d+)?)\s*(ms|s|m|h|d)?$/i);
+    if (!match) return null;
+    const amount = Number(match[1]);
+    const unit = (match[2] ?? 's').toLowerCase();
+    if (unit === 'ms') return amount / 1000;
+    if (unit === 'm') return amount * 60;
+    if (unit === 'h') return amount * 3600;
+    if (unit === 'd') return amount * 86400;
+    return amount;
+  }
+
+  function isNodeOffline(node) {
+    const uptime = parseUptimeSeconds(node.uptime);
+    if (uptime === 0) return true;
+    const zeroMetrics = [
+      node.memoryUsage?.allocated ?? 0,
+      node.memoryUsage?.used ?? 0,
+      node.cpuUsage?.lavalinkLoad ?? 0,
+      node.cpuUsage?.systemLoad ?? 0,
+      node.players?.node?.playing ?? 0,
+      node.players?.node?.total ?? 0,
+    ].every(v => Number(v) === 0);
+    const cores = node.cpuUsage?.cores;
+    const missingCores = cores == null || String(cores).trim() === '' || String(cores).trim() === '--';
+    return zeroMetrics && missingCores;
+  }
+
+  function renderNodeStatus(node) {
+    const offline = isNodeOffline(node);
+    return `<span class="badge ${offline ? 'badge-danger' : 'badge-success'}">● ${offline ? 'Offline' : 'Online'}</span>`;
+  }
+
+  function setCacheBadge(headers, body) {
+    const badge = document.getElementById('cache-badge');
+    const xCache = headers.get('X-Cache');
+    const age = headers.get('X-Cache-Age') ?? '0s';
+    const ageMin = Math.round(parseInt(age) / 60);
+    if (xCache === 'LIVE') {
+      badge.style.cssText = 'background:rgba(35,165,90,0.15);color:#23a55a';
+      badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Live';
+    } else if (body?._stale) {
+      badge.style.cssText = 'background:rgba(237,66,69,0.15);color:#ed4245';
+      badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Last known data (DB fallback)';
+    } else if (xCache === 'MISS') {
+      badge.style.cssText = 'background:rgba(35,165,90,0.15);color:#23a55a';
+      badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Live';
+    } else {
+      badge.style.cssText = 'background:rgba(240,177,50,0.15);color:#f0b132';
+      badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' + (ageMin > 0 ? ` Cached · ${ageMin}m ago` : ' Cached');
+    }
+  }
+
+  function renderStats(d) {
+      const shards = d.stats ?? [];
+      const guilds  = shards.reduce((a,s) => a + (s.client?.guilds  ?? 0), 0);
+      const users   = shards.reduce((a,s) => a + (s.client?.users   ?? 0), 0);
+      const playing = shards.reduce((a,s) => a + (s.node ?? []).reduce((b,n) => b + (n.players?.client?.playing ?? 0), 0), 0);
+      const pings   = shards.map(s => parsePing(s.client?.ping)).filter(Boolean);
+      const avgPing = pings.length ? Math.round(pings.reduce((a,b)=>a+b)/pings.length) : 0;
+
+      const cards = [
+        ['sc-guilds',  guilds],
+        ['sc-songs',   d.songsPlayed?.total ?? 0],
+        ['sc-cmds',    d.commandsUsed?.total ?? 0],
+        ['sc-playing', playing],
+      ];
+      cards.forEach(([id, val]) => countUp(document.getElementById(id), val));
+      document.getElementById('sc-users').textContent = fmt(users);
+      document.getElementById('sc-ping').textContent  = avgPing + 'ms';
+
+      const last7c = (d.commandsUsed?.all ?? []).slice(-7);
+      const last7s = (d.songsPlayed?.all  ?? []).slice(-7);
+      const cLabels = last7c.map(x => {
+        const [d, m] = x.id.split('-');
+        return `${d}/${m}`;
+      });
+      const cVals = last7c.map(x => x.value);
+      const sLabels = last7s.map(x => {
+        const [d, m] = x.id.split('-');
+        return `${d}/${m}`;
+      });
+      const sVals = last7s.map(x => x.value);
+      if (!cmdChart) {
+        cmdChart  = mkChart('chart-cmds',  cLabels, cVals, '#5865F2');
+        songChart = mkChart('chart-songs', sLabels, sVals, '#9b59b6');
+      } else {
+        updateChart(cmdChart, cLabels, cVals);
+        updateChart(songChart, sLabels, sVals);
+      }
+
+      document.getElementById('shards-grid').innerHTML = shards.map(s => {
+        const c = s.client;
+        const heap = ((c.memoryUsage?.heapUsed ?? 0) / 1048576).toFixed(1);
+        const heapT = ((c.memoryUsage?.heapTotal ?? 0) / 1048576).toFixed(1);
+        const cpu = (c.cpuUsage?.used ?? 0).toFixed(2);
+        const pl = (s.node ?? []).reduce((a,n) => { a.playing += n.players?.client?.playing ?? 0; a.total += n.players?.client?.total ?? 0; return a; }, { playing: 0, total: 0 });
+        return `<div class="card shard-card reveal">
+          <div class="shard-header"><span class="shard-id">Shard ${(c.shardIds??[0])[0]}</span><span class="badge badge-success">● Online</span></div>
+          <div class="shard-rows">
+            <div class="shard-row"><span>Guilds</span><span>${(c.guilds??0).toLocaleString()}</span></div>
+            <div class="shard-row"><span>Users</span><span>${fmt(c.users??0)}</span></div>
+            <div class="shard-row"><span>Ping</span><span>${c.ping??'--'}</span></div>
+            <div class="shard-row"><span>Uptime</span><span>${c.uptime??'--'}</span></div>
+            <div class="shard-row"><span>Heap</span><span>${heap} / ${heapT} MB</span></div>
+            <div class="shard-row"><span>CPU</span><span>${cpu}%</span></div>
+            <div class="shard-row"><span>Players</span><span>${pl.playing??0} playing / ${pl.total??0} total</span></div>
+          </div></div>`;
+      }).join('');
+
+      // Collect every unique Lavalink node across all shards (each shard reports the same node pool).
+      const nodeMap = new Map();
+      shards.forEach(s => (s.node ?? []).forEach(n => { if (n?.name && !nodeMap.has(n.name)) nodeMap.set(n.name, n); }));
+      const nodes = [...nodeMap.values()];
+      document.getElementById('nodes-grid').innerHTML = nodes.map(node => {
+        const alloc = node.memoryUsage?.allocated ?? 0;
+        const used  = node.memoryUsage?.used ?? 0;
+        const ramUsed = (used/1048576).toFixed(0), ramAlloc = (alloc/1048576).toFixed(0);
+        const ramPct = alloc ? Math.round(used/alloc*100) : 0;
+        const llLoad = ((node.cpuUsage?.lavalinkLoad ?? 0)*100).toFixed(1), sysLoad = ((node.cpuUsage?.systemLoad ?? 0)*100).toFixed(1);
+        return `<div class="card node-card reveal">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+            <h3 style="font-size:1.1rem">${node.name}</h3>
+            ${renderNodeStatus(node)}
+          </div>
+          <div class="node-grid">
+            <div class="node-item"><div class="lbl">Uptime</div><div class="val">${node.uptime ?? '--'}</div></div>
+            <div class="node-item"><div class="lbl">RAM Usage</div><div class="val">${ramUsed} / ${ramAlloc} MB</div><div class="progress-bar"><div class="progress-bar-fill" style="width:${ramPct}%"></div></div></div>
+            <div class="node-item"><div class="lbl">Lavalink Load</div><div class="val">${llLoad}%</div><div class="progress-bar"><div class="progress-bar-fill" style="width:${llLoad}%;background:var(--secondary)"></div></div></div>
+            <div class="node-item"><div class="lbl">System Load</div><div class="val">${sysLoad}%</div><div class="progress-bar"><div class="progress-bar-fill" style="width:${sysLoad}%;background:var(--warning)"></div></div></div>
+            <div class="node-item"><div class="lbl">Node Players</div><div class="val">${node.players?.node?.playing??0} / ${node.players?.node?.total??0}</div></div>
+            <div class="node-item"><div class="lbl">CPU Cores</div><div class="val">${node.cpuUsage?.cores ?? '--'}</div></div>
+          </div></div>`;
+      }).join('');
+      document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+  }
+
+  const isLive = new URLSearchParams(location.search).has('live');
+  const REFRESH_MS = isLive ? 10000 : 300000;
+
+  if (isLive) {
+    document.getElementById('hero-sub').textContent = 'Real-time metrics updated every 10 seconds.';
+  }
+
+  async function loadStats() {
+    try {
+      const url = isLive ? '/api/stats?live&_t=' + Date.now() : '/api/stats';
+      const res = await fetch(url);
+      const d = await res.json();
+      setCacheBadge(res.headers, d);
+      if (d.error) throw new Error('upstream error');
+      const ageMs = parseInt(res.headers.get('X-Cache-Age') ?? '0') * 1000;
+      renderStats(d);
+      document.getElementById('status-dot').className = 'dot online';
+      document.getElementById('status-text').textContent = 'Online';
+      try { localStorage.setItem('mesuic:stats', JSON.stringify(d)); } catch {}
+    } catch {
+      try {
+        const local = JSON.parse(localStorage.getItem('mesuic:stats'));
+        if (local && !local.error) {
+          renderStats(local);
+          document.getElementById('status-dot').className = 'dot offline';
+          document.getElementById('status-text').textContent = 'Offline';
+          const badge = document.getElementById('cache-badge');
+          badge.style.cssText = 'background:rgba(237,66,69,0.15);color:#ed4245';
+          badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Browser cache';
+          return;
+        }
+      } catch {}
+      document.getElementById('status-dot').className = 'dot offline';
+      document.getElementById('status-text').textContent = 'Offline';
+      document.getElementById('cache-badge').style.cssText = 'background:rgba(237,66,69,0.15);color:#ed4245';
+      document.getElementById('cache-badge').innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Unavailable';
+    }
+  }
+
+  loadStats();
+  setInterval(loadStats, REFRESH_MS);
+</script>
+</body>
+</html>
