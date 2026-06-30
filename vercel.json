@@ -6,17 +6,17 @@
   ],
   "rewrites": [
     { "source": "/cdn/(.*)", "destination": "/files/$1" },
-    { "source": "/sitemap.xml", "destination": "/api/sitemap.mjs" },
-    { "source": "/robots.txt",  "destination": "/api/robots.mjs" },
-    { "source": "/.well-known/api-catalog", "destination": "/api/api-catalog.mjs" },
-    { "source": "/",        "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }], "destination": "/api/md.mjs?path=home" },
-    { "source": "/status",  "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }], "destination": "/api/md.mjs?path=status" },
-    { "source": "/terms",   "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }], "destination": "/api/md.mjs?path=terms" },
-    { "source": "/privacy", "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }], "destination": "/api/md.mjs?path=privacy" },
-    { "source": "/", "destination": "/public/index.html" },
-    { "source": "/status", "destination": "/public/status.html" },
-    { "source": "/terms", "destination": "/public/terms.html" },
-    { "source": "/privacy", "destination": "/public/privacy.html" }
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    { "source": "/robots.txt",  "destination": "/api/robots" },
+    { "source": "/.well-known/api-catalog", "destination": "/api/api-catalog" },
+    { "source": "/",        "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }], "destination": "/api/md?path=home" },
+    { "source": "/status",  "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }], "destination": "/api/md?path=status" },
+    { "source": "/terms",   "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }], "destination": "/api/md?path=terms" },
+    { "source": "/privacy", "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }], "destination": "/api/md?path=privacy" },
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/status", "destination": "/status.html" },
+    { "source": "/terms", "destination": "/terms.html" },
+    { "source": "/privacy", "destination": "/privacy.html" }
   ],
   "headers": [
     {
