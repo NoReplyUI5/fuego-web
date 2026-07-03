@@ -142,13 +142,7 @@
       position: relative; overflow: hidden;
       transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
     }
-    .stat-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      opacity: 0; transition: opacity 0.25s;
-    }
     .stat-card:hover, .stat-card:active { border-color: rgba(88,101,242,0.3); transform: translateY(-3px); box-shadow: 0 8px 28px rgba(88,101,242,0.1); }
-    .stat-card:hover::before, .stat-card:active::before { opacity: 1; }
     .stat-card .icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(88,101,242,0.1); border: 1px solid rgba(88,101,242,0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 0.85rem; }
     .stat-card .icon svg { width: 17px; height: 17px; fill: none; stroke: var(--primary); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
     .stat-card .val { font-family: 'Space Grotesk', sans-serif; font-size: 1.65rem; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 0.3rem; }
