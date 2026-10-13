@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch('http://172.93.102.148:3001/stats');
+    const response = await fetch('http://193.149.164.150:3001/stats');
     const data = await response.json();
 
     if (!live) {
